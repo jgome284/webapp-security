@@ -26,8 +26,6 @@ Navigating to https://www.en.example.com/hello.html from URL1, however, would no
 
 As you can see, not having a security policy can be risky, but a security policy like same-origin is a bit too restrictive. Thankfully, there are security policies that strike a mix of both, like cross-origin, which has evolved into the cross-origin resource sharing standard, often abbreviated as CORS.
 
-(Click to enlarge)
-
 ## What is CORS?
 
 A request for a resource (like an image or a font) outside of the origin is known as a cross-origin request. CORS (cross-origin resource sharing) manages cross-origin requests.
@@ -44,8 +42,6 @@ Cross-origin requests, however, mean that servers must implement ways to handle 
 
 You can think of these interactions as a building with a security entrance. For example, if you need to borrow a ladder, you could ask a neighbor in the building who has one. The building’s security would likely not have a problem with this request (i.e., same-origin). If you needed a particular tool, however, and you ordered it from an outside source like an online marketplace (i.e., cross-origin), the security at the entrance may request that the delivery person provide identification when your tool arrives.
 
-(Click to enlarge)
-
 ## Why is CORS necessary?
 
 The CORS standard is needed because it allows servers to specify not only who can access the assets, but also how they can be accessed.
@@ -58,15 +54,16 @@ With CORS, a server can specify who can access its assets and which HTTP request
 
 An HTTP header is a piece of information associated with a request or a response. Headers are passed back and forth between your web browser (also referred to as a client) and a server when the web page you are on wants to use resources hosted on a different server. Headers are used to describe requests and responses. The CORS standard manages cross-origin requests by adding new HTTP headers to the standard list of headers. The following are the new HTTP headers added by the CORS standard:
 
-Access-Control-Allow-Origin
-Access-Control-Allow-Credentials
-Access-Control-Allow-Headers
-Access-Control-Allow-Methods
-Access-Control-Expose-Headers
-Access-Control-Max-Age
-Access-Control-Request-Headers
-Access-Control-Request-Method
-Origin
+- Access-Control-Allow-Origin
+- Access-Control-Allow-Credentials
+- Access-Control-Allow-Headers
+- Access-Control-Allow-Methods
+- Access-Control-Expose-Headers
+- Access-Control-Max-Age
+- Access-Control-Request-Headers
+- Access-Control-Request-Method
+- Origin
+
 These are all important, but let’s focus on the following header:
 
 Access-Control-Allow-Origin
@@ -81,18 +78,16 @@ As mentioned before, most servers will allow GET requests but may block requests
 
 When a request is made using any of the following HTTP request methods, a standard preflight request will be made before the original request.
 
-PUT
-DELETE
-CONNECT
-OPTIONS
-TRACE
-PATCH
+- PUT
+- DELETE
+- CONNECT
+- OPTIONS
+- TRACE
+- PATCH
 
 Preflight requests use the OPTIONS header. The preflight request is sent before the original request, hence the term “preflight.” The purpose of the preflight request is to determine whether or not the original request is safe (for example, a DELETE request). The server will respond to the preflight request and indicate whether or not the original request is safe. If the server specifies that the original request is safe, it will allow the original request. Otherwise, it will block the original request.
 
 The request methods above aren’t the only thing that will trigger a preflight request. If any of the headers that are automatically set by your browser (i.e., user agent) are modified, that will also trigger a preflight request.
-
-(Click to enlarge)
 
 ## How do I implement CORS?
 
@@ -104,8 +99,11 @@ response.setHeader('Content-Type', 'text/html');
 
 If you are using Express, you can use CORS middleware:
 
+```shell
 $ npm install cors
+```
 
+```JavaScript
 var express = require('express');
 var cors = require('cors');
 var app = express();
@@ -119,6 +117,7 @@ res.json({msg: 'Hello world, we are CORS-enabled!'});
 app.listen(80, function () {
 console.log('CORS-enabled web server is listening on port 80');
 });
+```
 
 ## Conclusion
 
