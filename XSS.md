@@ -1,10 +1,10 @@
-## Cross-Site Scripting (XSS) Attacks
+# Cross-Site Scripting (XSS) Attacks
 
 Cross-Site Scripting (XSS) is a common web application vulnerability that occurs when a web application renders unsanitized input to the front end of an application. An attacker takes advantage of this vulnerability by injecting malicious code, generally in the form of JavaScript, through the browser. They can trick a benign website into executing this code for other users. This enables an attacker to steal information from another user’s client-side data, redirect a user to malicious pages, or take control of their browser!
 
 We will walk through different types of such attacks: Stored XSS, Reflected XSS, and DOM-Based XSS.
 
-### Stored XSS
+## Stored XSS
 
 A stored XSS vulnerability occurs when a web server stores an unsanitized user input and displays it to other users. In a worst-case scenario, an attacker can input a malicious script and store it to the vulnerable website, making the script run for all other users on that page.
 
@@ -16,7 +16,7 @@ Let’s say a website has a poorly designed comment function where the backend d
 
 This effect makes Stored XSS attacks some of the most serious XSS attacks.
 
-### Reflected XSS
+## Reflected XSS
 
 Reflected XSS occurs when a user’s input is immediately returned back to the user. This return may come in the form of an error message, a popup, or a search term. In these instances, the malicious code is never stored by the server. Rather, it exists as a value in the URL or request.
 
@@ -24,7 +24,7 @@ Despite the bad code not being stored in the database and executed by all victim
 
 ![An image showing in Reflected XSS that an attacker sends a script injected link to the victim, the victim clicks on it, the victim's browser loads the legitimate site while also executing the malicious script, and then the malicious script sends the user's information to the attacker.](./imgs/Cybersecurity_XSS_Reflected_v2.svg)
 
-### DOM-Based XSS
+## DOM-Based XSS
 
 The DOM, short for Document Object Model, is used to help scripts and the underlying webpage interact. When user input is interpreted by the DOM, an attacker is able to inject malicious code there. These types of vulnerabilities do not cause any changes in how the server responds. Rather, these attacks are completely client-side.
 
