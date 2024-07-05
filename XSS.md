@@ -144,3 +144,31 @@ app.post("/login", [
 In the example above, the email field is sent through a login form and retrieved from req.body. Notice how we’re using an array since we can pass in multiple check‘s for input data.
 
 If the input data is valid, then the rest of the request will be executed and we know that the data passed in is safe and properly formatted.
+
+## DOM-Based Precautions
+
+We know that, in DOM-Based Attacks, the malicious code is client-side. To prevent this attack developers must be very careful with the type of code used in the browser.
+
+To be more specific, these types of attacks happen when data from a user-controlled source (like user name or redirect URL taken from the URL fragment) reaches a sink, which is a function like eval() or a property setter like .innerHTML, that can execute arbitrary JavaScript code.
+
+There are several methods and attributes which can be used to directly render HTML content within JavaScript. If these methods are provided with malicious input, then an XSS vulnerability could result. For example:
+
+```JavaScript
+// Attribute:
+element.innerHTML = "<HTML> Tags and markup";
+// Method:
+ document.write("<HTML> Tags and markup");
+```
+
+Instead, one can replace these methods with an attribute like textContent.
+
+```Javascript
+// Will add as an actual HTML element.
+element.innerHTML = "<maliciousHTML>";
+// Will render as text on the webpage.
+element.textContent = "<displaysAsText>";
+```
+
+Ideally, one could take a step further and avoid rendering user input, especially if it affects DOM elements such as the document.url, document.location, or document.referrer.
+
+Lastly, one should validate and sanitize all user input in order to prevent any data manipulation.
