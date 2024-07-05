@@ -117,3 +117,30 @@ You can use helmet by adding the following line of code:
 ```JavaScript
 app.use(helmet());
 ```
+
+## Data Validation and Sanitization
+
+In the Reflected and Stored XSS Attacks, we saw how an attacker can inject malicious code into the server and/or database using a form. This is why it’s important to validate and/or sanitize data before it’s submitted to the server.
+
+When we validate data we ensure that the user is not submitting information that doesn’t fit a certain format. Moreover, we can use sanitization in order to reformat data so no malicious code is sent.
+
+In other words, validation checks if the input meets a set of criteria (such as a string contains no standalone single quotation marks), whereas sanitization modifies the input to ensure that it is valid (such as removing single quotes).
+
+There are many packages that help validate user data, and one common package is express-validator. It’s built off of the validator package, and it is recommended for use in express applications. With express-validator, we can verify if a string matches a certain format by importing certain functions such as check:
+
+```Javascript
+const { check } = require("express-validator");
+```
+
+Once the function is imported, it can be used as a middleware within our endpoints, to validate any input that’s submitted within objects attached to req (such as data sent in a form through req.body):
+
+```Javascript
+app.post("/login", [
+  check('email').isEmail(),
+  check("password").isLength({ min: 5 }),
+], (req, res) => {});
+```
+
+In the example above, the email field is sent through a login form and retrieved from req.body. Notice how we’re using an array since we can pass in multiple check‘s for input data.
+
+If the input data is valid, then the rest of the request will be executed and we know that the data passed in is safe and properly formatted.
