@@ -63,3 +63,30 @@ execFile("ls", ["-lah", "/tmp"]);
 ```
 
 The arguments for the command ls must be separated in the execFile() method call. This separation ensures that an attacker cannot inject their malicious commands. Whereas exec will allow for additional unintended commands in the input, execFile will detect an error.
+
+## Dangers and Secure Use of the fs Module
+
+The file system, or fs, module in Node.js enables file system operations. It gives us access to methods like:
+
+- chmod() to change file permissions
+- mkdir() to create directories
+- rmdir() to delete directories
+- And many more
+
+The fs module coupled with improperly sanitized user input gives attackers access to our entire file system and exposes it to path traversal and file inclusion vulnerabilities. Take a look at the code below:
+
+```Javascript
+const user_input = "./example.txt";
+fs.unlinkSync(user_input);
+```
+
+The above example uses `unlink()` to delete the file defined by the user’s input. It could be any file on our system! To mitigate the risk, we can tweak our code to restrict traversal scope to a directory of our choice:
+
+```Javascript
+const user_input = "example.txt"
+const root_directory = process.cwd();   // Hard-code path to restrict scope
+const filePath = path.join(root_directory , fileName);
+fs.unlinkSync(filePath);
+```
+
+We use the `join()` method of the path variable to combine our desired directory with the user-provided file name. Hiding the directory the server is operating on makes it tougher to reach valuable information.
