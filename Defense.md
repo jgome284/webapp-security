@@ -36,3 +36,30 @@ Best practices with `eval` are:
 - If you must use it, use a safer version, and only allow trusted, non-user input.
 
 You should always do your own research when exploring packages to use in your applications.
+
+## The exec method: Dangers and Alternatives
+
+In this exercise, we will discuss the exec() method, its risks, and alternatives.
+
+The exec() method takes a string as an argument and runs it as a shell command, enabling shell syntax within JavaScript. The danger is that unrestricted commands can access, modify, and delete files. For example:
+
+```Javascript
+user_input = "cat *.js";
+exec(user_input);
+```
+
+exec(), combined with the user input above, allows an attacker to print out all the JavaScript files in the current directory.
+
+The execFile() method is an alternative that works similarly to exec() but requires separation of the commands and its arguments. This prevents piped commands and path variable access. Consider the following example:
+
+```Javascript
+import { exec, execFile } from "child_process";
+
+// Spawns a shell with the input as is
+exec("ls -lah /tmp");
+
+// Requires a command and specified arguments to execute
+execFile("ls", ["-lah", "/tmp"]);
+```
+
+The arguments for the command ls must be separated in the execFile() method call. This separation ensures that an attacker cannot inject their malicious commands. Whereas exec will allow for additional unintended commands in the input, execFile will detect an error.
