@@ -85,3 +85,35 @@ For example, the < character would be converted to the “<” string. The brows
 It is important to note, however, that depending on how the data is used, this type of escaping may not be enough. It’s important to consider all potential avenues for an attack.
 
 There are also JavaScript packages like [sanitize-html](https://www.npmjs.com/package/sanitize-html) that help sanitizer user inputs!
+
+## Securing Cookies and Headers
+
+### Securing Cookies
+
+An express server that uses express-session to store cookies has the properties httpOnly and secure to configure how to store and send cookies. Setting httpOnly and secure to true helps mitigate the risk of client-side script accessing the protected cookie.
+
+In order to set up a cookie in an Express server, you can use the library express-session to set up a session and configure the application with specific properties pertaining to cookies:
+
+```JavaScript
+app.use(
+  session({
+    secret: "my-secret",
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      httpOnly: true,
+      secure: true
+    },
+  })
+);
+```
+
+### Setting Security Headers
+
+Moreover, we can include the helmet package to edit HTTP headers. Helmet.js is a collection of 15 Node modules that interface with Express. Each module provides configuration options for securing different HTTP headers. One of them being the contentSecurityPolicy which is an added layer of security that helps to detect and mitigate certain types of attacks. Fortunately, by just including this package in your express app, 11 of these modules (including the content security policy module) will be configured automatically.
+
+You can use helmet by adding the following line of code:
+
+```JavaScript
+app.use(helmet());
+```
